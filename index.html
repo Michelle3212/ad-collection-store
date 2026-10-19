@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Browse cute, colourful badges and order directly by WhatsApp or email.">
+  <title>A &amp; D Collection | Badge Store</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <script src="{{ url_for('static', filename='js/script.js') }}" defer></script>
+</head>
+<body>
+  <div class="announcement">A little badge can add a lot of personality ✨</div>
+  <header class="site-header">
+    <a class="brand" href="#home" aria-label="A and D Collection home">
+      <img class="brand-logo" src="{{ url_for('static', filename='images/ad-collection-logo.png') }}" alt="A & D Collection logo">
+    </a>
+    <nav>
+      <a href="#collection">Shop badges</a>
+      <a href="#how-to-order">How to order</a>
+      <a class="nav-contact" href="https://wa.me/{{ '91' }}{{ whatsapp_display }}" target="_blank" rel="noopener">Contact us ↗</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero" id="home">
+      <div class="hero-copy">
+        <span class="eyebrow"><span class="eyebrow-dot"></span> SMALL THINGS, BIG JOY</span>
+        <h1>Wear your<br><span>little happy.</span></h1>
+        <p>Find badges that feel like you. Cute designs, lovely colours, and an easy way to order your favourites.</p>
+        <a class="primary-button" href="#collection">Explore the collection <span>↓</span></a>
+        <div class="hero-note"><span class="mini-sparkle">✦</span> Pick a design. Message us. It's that simple.</div>
+      </div>
+      <div class="hero-art" aria-label="Decorative badge illustrations">
+        <div class="floating-note note-one">made with ♡</div>
+        <div class="big-badge badge-flower"><span>✿</span><small>GOOD<br>VIBES</small></div>
+        <div class="big-badge badge-smile">☺</div>
+        <div class="big-badge badge-star">✦</div>
+        <div class="big-badge badge-cherry">♥<small>sweet!</small></div>
+        <div class="floating-note note-two">your new fave ✨</div>
+        <span class="art-spark spark-one">✧</span><span class="art-spark spark-two">✦</span>
+      </div>
+    </section>
+
+    <section class="collection section-wrap" id="collection">
+      <div class="section-heading">
+        <div>
+          <span class="eyebrow">THE BADGE EDIT</span>
+          <h2>Find your favourite.</h2>
+          <p>Little designs made to go wherever you do.</p>
+        </div>
+        <div class="product-count">{{ products|length }} designs <span>✳</span></div>
+      </div>
+
+      <div class="toolbar">
+        <label class="search-box">
+          <span aria-hidden="true">⌕</span>
+          <input type="search" id="product-search" placeholder="Search badges..." aria-label="Search badges">
+        </label>
+        <div class="filter-buttons" aria-label="Filter badges">
+          <button class="filter-button active" data-category="All" type="button">All badges</button>
+          {% for category in categories %}
+          <button class="filter-button" data-category="{{ category }}" type="button">{{ category }}</button>
+          {% endfor %}
+        </div>
+      </div>
+
+      <div class="product-grid" id="product-grid">
+        {% for product in products %}
+        <article class="product-card"
+                 data-name="{{ product.name|lower }}"
+                 data-category="{{ product.category }}">
+          <div class="product-image image-{{ product.id }}">
+            {% if product.tag %}<span class="product-tag">{{ product.tag }}</span>{% endif %}
+            <img src="{{ url_for('static', filename='images/' + product.image) }}" alt="{{ product.name }} badge illustration">
+            <span class="image-number">0{{ loop.index }}</span>
+          </div>
+          <div class="product-info">
+            <div class="product-category">{{ product.category }}</div>
+            <div class="product-title-row">
+              <h3>{{ product.name }}</h3>
+              <span class="price">₹{{ product.price }}</span>
+            </div>
+            <p>{{ product.description }}</p>
+            <div class="order-actions">
+              <a class="order-button whatsapp-button" href="{{ product.whatsapp_url }}" target="_blank" rel="noopener">
+                <span class="wa-icon">◉</span> Order on WhatsApp
+              </a>
+              <a class="email-link" href="{{ product.email_url }}" aria-label="Order {{ product.name }} by email">Email us ↗</a>
+            </div>
+          </div>
+        </article>
+        {% endfor %}
+      </div>
+      <div class="no-results" id="no-results" hidden>No badges found. Try another search. 🌼</div>
+    </section>
+
+    <section class="order-guide" id="how-to-order">
+      <div class="guide-heading">
+        <span class="eyebrow">YOUR BADGE, YOUR WAY</span>
+        <h2>Ordering is as easy as 1, 2, 3.</h2>
+      </div>
+      <div class="steps">
+        <div class="step"><span class="step-number">01</span><div class="step-icon">♡</div><h3>Choose a badge</h3><p>Browse the collection and find a design you love.</p></div>
+        <div class="step"><span class="step-number">02</span><div class="step-icon">✉</div><h3>Tap to message</h3><p>Choose WhatsApp or email. Your selected badge is added to the message.</p></div>
+        <div class="step"><span class="step-number">03</span><div class="step-icon">✦</div><h3>Confirm your order</h3><p>We'll confirm availability, delivery charges and payment details with you.</p></div>
+      </div>
+    </section>
+
+    <section class="contact-banner">
+      <div><span class="eyebrow">NEED A LITTLE HELP?</span><h2>Questions? We're just a message away.</h2><p>Ask us about availability, bulk orders or delivery.</p></div>
+      <div class="contact-actions">
+        <a class="primary-button" href="https://wa.me/91{{ whatsapp_display }}" target="_blank" rel="noopener">Chat on WhatsApp ↗</a>
+        <a class="outline-button" href="mailto:{{ business_email }}?subject=Badge%20enquiry">Send an email ↗</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <a class="brand footer-brand" href="#home" aria-label="A and D Collection home"><img class="brand-logo footer-logo" src="{{ url_for('static', filename='images/ad-collection-logo.png') }}" alt="A &amp; D Collection logo"></a>
+    <p>Made for your everyday kind of magic ✨</p>
+    <span>© <span id="year"></span> A &amp; D Collection</span>
+  </footer>
+</body>
+</html>
